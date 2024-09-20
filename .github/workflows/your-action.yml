@@ -30,12 +30,14 @@ jobs:
 
       # Bước 4: Kiểm tra xem có thay đổi hay không trước khi commit
       - name: Commit changes if there are updates
-        run: |
-          git config --global user.email "your-email@example.com"
-          git config --global user.name "GitHub Actions"
-          if [ -n "$(git status --porcelain)" ]; then
-            git add .
-            git commit -m "Update finance information from Ministry of Finance"
-            git push
-          else
-            echo "No changes to commit"
+  run: |
+    git config --global user.email "your-email@example.com"
+    git config --global user.name "GitHub Actions"
+    if [[ $(git status --porcelain) ]]; then
+      git add .
+      git commit -m "Update finance information from Ministry of Finance"
+      git push
+    else
+      echo "No changes to commit"
+    fi
+
