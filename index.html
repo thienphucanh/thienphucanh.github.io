@@ -77,21 +77,29 @@
     </footer>
 
     <script>
-        // Đọc nội dung từ file finance-info/index.html và hiển thị
-        fetch('/finance-info/index.html')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Không thể tải nội dung');
-                }
-                return response.text();
-            })
-            .then(data => {
-                document.getElementById('loading').style.display = 'none'; // Ẩn thông báo tải
-                document.getElementById('finance-content').innerHTML = data; // Hiển thị nội dung
-            })
-            .catch(error => {
-                document.getElementById('loading').innerHTML = 'Lỗi khi tải dữ liệu: ' + error.message;
-            });
+        // Đọc nội dung từ URL Bộ Tài Chính và xử lý nếu có chuyển hướng
+        const originalURL = 'https://www.mof.gov.vn/webcenter/portal/btc/r/lvtc/';
+
+        // Fetch nội dung từ URL
+        fetch(originalURL, {
+            method: 'GET',
+            redirect: 'manual' // Đặt để không tự động theo dõi chuyển hướng
+        })
+        .then(response => {
+            if (response.status === 302) {
+                // Nếu nhận được mã chuyển hướng 302, lấy URL đích
+                const redirectURL = response.headers.get('Location');
+                return fetch(redirectURL); // Tiếp tục fetch từ URL mới
+            }
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById('loading').style.display = 'none'; // Ẩn thông báo tải
+            document.getElementById('finance-content').innerHTML = data; // Hiển thị nội dung
+        })
+        .catch(error => {
+            document.getElementById('loading').innerHTML = 'Lỗi khi tải dữ liệu: ' + error.message;
+        });
     </script>
 </body>
 </html>
