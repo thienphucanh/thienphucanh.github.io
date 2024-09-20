@@ -1,6 +1,6 @@
 name: Update Finance Info
 
-# Thiết lập để chạy mỗi phút và có thể kích hoạt thủ công
+# Thiết lập để chạy mỗi phút và cho phép kích hoạt thủ công
 on:
   schedule:
     - cron: '*/1 * * * *'  # Chạy mỗi 1 phút
@@ -22,22 +22,21 @@ jobs:
         uses: actions/checkout@v2
 
       # Bước 3: Fetch dữ liệu từ cổng thông tin Bộ Tài chính
-      # Chỉ dùng curl mà không cần -L, JavaScript sẽ xử lý chuyển hướng sau
+      # Không cần theo dõi chuyển hướng (-L) vì JavaScript sẽ xử lý chuyển hướng
       - name: Fetch Ministry of Finance information
         run: |
           mkdir -p finance-info
           curl -k https://www.mof.gov.vn/webcenter/portal/btc/r/lvtc/ > finance-info/index.html
 
-      # Bước 4: Kiểm tra xem có thay đổi hay không trước khi commit
+      # Bước 4: Kiểm tra xem có thay đổi nào trước khi commit
       - name: Commit changes if there are updates
-  run: |
-    git config --global user.email "thienphucanh@outlook.com"
-    git config --global user.name "GitHub Actions"
-    if [[ $(git status --porcelain) ]]; then
-      git add .
-      git commit -m "Update finance information from Ministry of Finance"
-      git push
-    else
-      echo "No changes to commit"
-    fi
-
+        run: |
+          git config --global user.email "thienphucanh@outlook.com"
+          git config --global user.name "GitHub Actions"
+          if [[ $(git status --porcelain) ]]; then
+            git add .
+            git commit -m "Update finance information from Ministry of Finance"
+            git push
+          else
+            echo "No changes to commit"
+          fi
