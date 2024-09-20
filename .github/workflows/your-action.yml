@@ -3,8 +3,8 @@ name: Update Finance Info
 # Thiết lập để chạy mỗi phút và có thể kích hoạt thủ công
 on:
   schedule:
-    - cron: '*/5 * * * *'  # Chạy mỗi 1 phút
-  workflow_dispatch:  # Kích hoạt thủ công nếu cần
+    - cron: '*/1 * * * *'  # Chạy mỗi 1 phút
+  workflow_dispatch:  # Cho phép kích hoạt thủ công nếu cần
 
 jobs:
   update-finance-site:
@@ -22,11 +22,11 @@ jobs:
         uses: actions/checkout@v2
 
       # Bước 3: Fetch dữ liệu từ cổng thông tin Bộ Tài chính
-      # Sử dụng TLS 1.2 và tắt xác thực SSL (nếu cần) để tránh lỗi SSL version
+      # Chỉ dùng curl mà không cần -L, JavaScript sẽ xử lý chuyển hướng sau
       - name: Fetch Ministry of Finance information
         run: |
           mkdir -p finance-info
-          curl --tlsv1.2 -k https://www.mof.gov.vn/webcenter/portal/btc/r/lvtc/ > finance-info/index.html
+          curl -k https://www.mof.gov.vn/webcenter/portal/btc/r/lvtc/ > finance-info/index.html
 
       # Bước 4: Kiểm tra xem có thay đổi hay không trước khi commit
       - name: Commit changes if there are updates
