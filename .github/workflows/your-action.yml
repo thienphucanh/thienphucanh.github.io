@@ -17,10 +17,10 @@ jobs:
         uses: actions/checkout@v2
 
       # Fetch dữ liệu từ cổng thông tin Bộ Tài chính
-      - name: Fetch Ministry of Finance information
+       - name: Fetch Ministry of Finance information
         run: |
           mkdir -p finance-info
-          curl https://www.mof.gov.vn/webcenter/portal/btc/r/lvtc/ > finance-info/index.html
+          curl -L https://www.mof.gov.vn/webcenter/portal/btc/r/lvtc/ > finance-info/index.html
 
       # Commit thay đổi và đẩy lên repository
       - name: Commit and push changes
