@@ -3,103 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thông tin công bố từ Bộ Tài Chính</title>
+    <title>Tổng hợp thông tin từ các bộ Chính phủ</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background-color: #0073b1;
-            color: white;
             padding: 20px;
-            text-align: center;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-
-        .content-section {
-            background-color: white;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .content-section h2 {
-            font-size: 1.5em;
+        h1 {
             color: #0073b1;
-            margin-top: 0;
         }
-
-        .content-section p {
-            line-height: 1.6;
-        }
-
-        #loading {
-            text-align: center;
-            padding: 20px;
-            font-size: 18px;
-            color: #666;
-        }
-
-        footer {
-            background-color: #0073b1;
-            color: white;
-            text-align: center;
-            padding: 10px;
+        .feed-container {
             margin-top: 20px;
+        }
+        .feed-item {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .feed-item h3 {
+            margin: 0;
+        }
+        .feed-item p {
+            color: #666;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Thông tin công bố từ Bộ Tài Chính</h1>
-    </header>
+    <h1>Cập nhật thông tin từ các bộ Chính phủ Việt Nam</h1>
+    <p>Các thông tin mới nhất sẽ được cập nhật tự động:</p>
 
-    <div class="container">
-        <div class="content-section">
-            <h2>Thông tin mới nhất</h2>
-            <div id="loading">Đang tải dữ liệu...</div>
-            <div id="finance-content"></div> <!-- Nội dung từ Bộ Tài chính sẽ hiển thị ở đây -->
-        </div>
+    <div id="feeds" class="feed-container">
+        <!-- Nơi hiển thị các bài viết -->
     </div>
 
-    <footer>
-        <p>&copy; 2024 Thông tin công bố từ Bộ Tài Chính</p>
-    </footer>
-
     <script>
-        // Đọc nội dung từ URL Bộ Tài Chính và xử lý nếu có chuyển hướng
-        const originalURL = 'https://www.mof.gov.vn/webcenter/portal/btc/r/lvtc/';
+        // Hàm lấy dữ liệu từ RSS feed
+        async function fetchRSSFeed(url) {
+            const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`);
+            const data = await response.json();
+            return data;
+        }
 
-        // Fetch nội dung từ URL
-        fetch(originalURL, {
-            method: 'GET',
-            redirect: 'manual' // Đặt để không tự động theo dõi chuyển hướng
-        })
-        .then(response => {
-            if (response.status === 302) {
-                // Nếu nhận được mã chuyển hướng 302, lấy URL đích
-                const redirectURL = response.headers.get('Location');
-                return fetch(redirectURL); // Tiếp tục fetch từ URL mới
+        // Hiển thị các bài viết từ RSS feed
+        async function displayFeed() {
+            const feedsElement = document.getElementById('feeds');
+
+            // Thêm các nguồn RSS feed ở đây
+            const rssFeeds = [
+                { name: 'Bộ Tài Chính', url: 'https://rss.app/feeds/hdqd1R1tsGYk7xfC.xml' }, // Thay URL bằng RSS của Bộ Tài Chính
+                { name: 'Bộ Công Thương', url: 'https://example.com/rss' } // Thay URL bằng RSS của Bộ Công Thương
+            ];
+
+            for (const feed of rssFeeds) {
+                const feedData = await fetchRSSFeed(feed.url);
+                const items = feedData.items;
+
+                const feedHeader = document.createElement('h2');
+                feedHeader.textContent = feed.name;
+                feedsElement.appendChild(feedHeader);
+
+                items.forEach(item => {
+                    const feedItem = document.createElement('div');
+                    feedItem.classList.add('feed-item');
+                    feedItem.innerHTML = `
+                        <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
+                        <p>${item.pubDate}</p>
+                        <p>${item.description}</p>
+                    `;
+                    feedsElement.appendChild(feedItem);
+                });
             }
-            return response.text();
-        })
-        .then(data => {
-            document.getElementById('loading').style.display = 'none'; // Ẩn thông báo tải
-            document.getElementById('finance-content').innerHTML = data; // Hiển thị nội dung
-        })
-        .catch(error => {
-            document.getElementById('loading').innerHTML = 'Lỗi khi tải dữ liệu: ' + error.message;
-        });
+        }
+
+        // Gọi hàm khi trang được tải
+        displayFeed();
     </script>
 </body>
 </html>
