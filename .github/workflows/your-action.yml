@@ -26,7 +26,7 @@ jobs:
       - name: Fetch Ministry of Finance information
         run: |
           mkdir -p finance-info
-          curl -L --tlsv1.2 -k https://www.mof.gov.vn/webcenter/portal/btc/r/lvtc/ > finance-info/index.html
+          curl -L --tlsv1.3 -k https://www.mof.gov.vn/webcenter/portal/btc/r/lvtc/ > finance-info/index.html
 
       # Bước 4: Kiểm tra xem có thay đổi hay không trước khi commit
       - name: Commit changes if there are updates
