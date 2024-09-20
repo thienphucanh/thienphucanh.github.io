@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thông tin công bố từ các Bộ</title>
+    <title>Thông tin công bố từ các Bộ Chính phủ Việt Nam</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,7 +15,7 @@
         header {
             background-color: #0073b1;
             color: white;
-            padding: 15px 20px;
+            padding: 20px;
             text-align: center;
         }
 
@@ -25,139 +25,73 @@
             padding: 0 20px;
         }
 
-        .search-box {
-            margin-bottom: 20px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 16px;
-        }
-
-        .departments {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .department-card {
+        .content-section {
             background-color: white;
             padding: 20px;
+            margin-top: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            width: 30%;
         }
 
-        .department-card h3 {
+        .content-section h2 {
+            font-size: 1.5em;
+            color: #0073b1;
             margin-top: 0;
         }
 
-        .announcement-list {
-            margin-top: 30px;
+        .content-section p {
+            line-height: 1.6;
         }
 
-        .announcement-list h2 {
-            font-size: 1.5em;
-        }
-
-        .announcement {
-            background-color: #fff;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-left: 5px solid #0073b1;
-        }
-
-        .announcement h4 {
-            margin: 0;
-        }
-
-        .announcement time {
-            font-size: 0.9em;
+        #loading {
+            text-align: center;
+            padding: 20px;
+            font-size: 18px;
             color: #666;
+        }
+
+        footer {
+            background-color: #0073b1;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Thông tin công bố từ các Bộ Chính phủ Việt Nam</h1>
+        <h1>Thông tin công bố từ Bộ Tài Chính</h1>
     </header>
 
     <div class="container">
-        <div class="search-box">
-            <input type="text" id="search" placeholder="Tìm kiếm thông tin..." onkeyup="searchAnnouncements()">
-        </div>
-
-        <div class="departments">
-            <div class="department-card">
-                <h3>Bộ Tài chính</h3>
-                <p>Cập nhật các thông tin mới nhất từ Bộ Tài chính.</p>
-            </div>
-
-            <div class="department-card">
-                <h3>Bộ Công Thương</h3>
-                <p>Cập nhật các thông tin mới nhất từ Bộ Công Thương.</p>
-            </div>
-
-            <div class="department-card">
-                <h3>Bộ Kế hoạch và Đầu tư</h3>
-                <p>Cập nhật các thông tin mới nhất từ Bộ Kế hoạch và Đầu tư.</p>
-            </div>
-        </div>
-
-        <div class="announcement-list">
-            <h2>Thông báo mới nhất</h2>
-
-            <div id="rss-feed"></div> <!-- Nơi hiển thị các tin từ RSS -->
+        <div class="content-section">
+            <h2>Thông tin mới nhất từ Bộ Tài chính</h2>
+            <div id="loading">Đang tải dữ liệu...</div>
+            <div id="finance-content"></div> <!-- Nội dung từ Bộ Tài chính sẽ hiển thị ở đây -->
         </div>
     </div>
 
+    <footer>
+        <p>&copy; 2024 Thông tin công bố từ các Bộ Chính phủ</p>
+    </footer>
+
     <script>
-        // Hàm lấy RSS Feed từ các bộ
-        function fetchRSSFeed() {
-            const rssUrl = 'https://www.mof.gov.vn/rss'; // Thay bằng RSS feed từ Bộ Tài Chính hoặc bộ khác
-
-            // Dùng dịch vụ chuyển đổi RSS sang JSON
-            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`;
-
-            fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                let output = '';
-                data.items.forEach(item => {
-                    output += `
-                    <div class="announcement">
-                        <h4><a href="${item.link}" target="_blank">${item.title}</a></h4>
-                        <time datetime="${item.pubDate}">${new Date(item.pubDate).toLocaleDateString()}</time>
-                        <p>${item.description}</p>
-                    </div>
-                    `;
-                });
-                document.getElementById('rss-feed').innerHTML = output;
-            })
-            .catch(error => console.error('Error fetching RSS feed:', error));
-        }
-
-        // Gọi hàm khi trang được tải
-        window.onload = function() {
-            fetchRSSFeed();
-        };
-
-        // Hàm tìm kiếm thông báo
-        function searchAnnouncements() {
-            var input = document.getElementById('search').value.toLowerCase();
-            var announcements = document.querySelectorAll('.announcement');
-            
-            announcements.forEach(function(announcement) {
-                var title = announcement.querySelector('h4').textContent.toLowerCase();
-                if (title.includes(input)) {
-                    announcement.style.display = 'block';
-                } else {
-                    announcement.style.display = 'none';
+        // Đọc nội dung từ file finance-info/index.html và hiển thị
+        fetch('/finance-info/index.html')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Không thể tải nội dung');
                 }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('loading').style.display = 'none'; // Ẩn thông báo tải
+                document.getElementById('finance-content').innerHTML = data; // Hiển thị nội dung
+            })
+            .catch(error => {
+                document.getElementById('loading').innerHTML = 'Lỗi khi tải dữ liệu: ' + error.message;
             });
-        }
     </script>
 </body>
 </html>
