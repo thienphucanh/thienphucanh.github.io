@@ -1,32 +1,34 @@
 name: Update Finance Info
 
-# Thiết lập để chạy mỗi 1 phút và có thể kích hoạt thủ công
+# Thiết lập để chạy mỗi phút và cho phép kích hoạt thủ công
 on:
   schedule:
     - cron: '*/1 * * * *'  # Chạy mỗi 1 phút
-  workflow_dispatch:  # Kích hoạt thủ công nếu cần
+  workflow_dispatch:  # Cho phép kích hoạt thủ công nếu cần
 
 jobs:
   update-finance-site:
     runs-on: ubuntu-latest
 
     steps:
-      # Bước 1: Checkout repository để lấy mã nguồn hiện tại
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      # Bước 2: Fetch dữ liệu từ cổng thông tin Bộ Tài chính với theo dõi chuyển hướng (302)
+      # Bước 1: Cập nhật curl lên phiên bản mới nhất để đảm bảo tính tương thích
       - name: Update curl to the latest version
         run: |
           sudo apt-get update
           sudo apt-get install -y curl
 
+      # Bước 2: Checkout repository để lấy mã nguồn hiện tại
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Bước 3: Fetch dữ liệu từ cổng thông tin Bộ Tài chính
+      # Sử dụng TLS 1.2 và tắt xác thực SSL (nếu cần) để tránh lỗi SSL version
       - name: Fetch Ministry of Finance information
         run: |
           mkdir -p finance-info
-          curl -L --tlsv1.2 https://www.mof.gov.vn/webcenter/portal/btc/r/lvtc/ > finance-info/index.html
+          curl -L --tlsv1.2 -k https://www.mof.gov.vn/webcenter/portal/btc/r/lvtc/ > finance-info/index.html
 
-      # Bước 3: Kiểm tra xem có thay đổi hay không trước khi commit
+      # Bước 4: Kiểm tra xem có thay đổi hay không trước khi commit
       - name: Commit changes if there are updates
         run: |
           git config --global user.email "your-email@example.com"
@@ -37,4 +39,3 @@ jobs:
             git push
           else
             echo "No changes to commit"
-          fi
