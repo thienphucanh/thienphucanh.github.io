@@ -109,27 +109,42 @@
         <div class="announcement-list">
             <h2>Thông báo mới nhất</h2>
 
-            <div class="announcement">
-                <h4>Thông báo về chính sách thuế mới</h4>
-                <time datetime="2024-09-21">21 Tháng 9, 2024</time>
-                <p>Bộ Tài chính đã công bố chính sách thuế mới áp dụng từ tháng 10.</p>
-            </div>
-
-            <div class="announcement">
-                <h4>Kế hoạch phát triển kinh tế 2025</h4>
-                <time datetime="2024-09-19">19 Tháng 9, 2024</time>
-                <p>Bộ Kế hoạch và Đầu tư đã công bố kế hoạch phát triển kinh tế trong năm 2025.</p>
-            </div>
-
-            <div class="announcement">
-                <h4>Thông báo điều chỉnh giá điện</h4>
-                <time datetime="2024-09-18">18 Tháng 9, 2024</time>
-                <p>Bộ Công Thương thông báo về việc điều chỉnh giá điện vào cuối năm nay.</p>
-            </div>
+            <div id="rss-feed"></div> <!-- Nơi hiển thị các tin từ RSS -->
         </div>
     </div>
 
     <script>
+        // Hàm lấy RSS Feed từ các bộ
+        function fetchRSSFeed() {
+            const rssUrl = 'https://www.mof.gov.vn/rss'; // Thay bằng RSS feed từ Bộ Tài Chính hoặc bộ khác
+
+            // Dùng dịch vụ chuyển đổi RSS sang JSON
+            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`;
+
+            fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                let output = '';
+                data.items.forEach(item => {
+                    output += `
+                    <div class="announcement">
+                        <h4><a href="${item.link}" target="_blank">${item.title}</a></h4>
+                        <time datetime="${item.pubDate}">${new Date(item.pubDate).toLocaleDateString()}</time>
+                        <p>${item.description}</p>
+                    </div>
+                    `;
+                });
+                document.getElementById('rss-feed').innerHTML = output;
+            })
+            .catch(error => console.error('Error fetching RSS feed:', error));
+        }
+
+        // Gọi hàm khi trang được tải
+        window.onload = function() {
+            fetchRSSFeed();
+        };
+
+        // Hàm tìm kiếm thông báo
         function searchAnnouncements() {
             var input = document.getElementById('search').value.toLowerCase();
             var announcements = document.querySelectorAll('.announcement');
