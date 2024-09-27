@@ -55,15 +55,44 @@
             list-style: none;
             padding: 0;
             margin: 0;
+            display: inline-flex;
         }
         nav ul li {
-            display: inline-block;
+            position: relative;
             margin: 0 15px;
         }
         nav ul li a {
             text-decoration: none;
             color: #333;
             font-weight: 500;
+            padding: 10px;
+            display: block;
+        }
+        /* Dropdown styles */
+        nav ul li ul {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            list-style: none;
+            padding: 10px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            min-width: 150px;
+        }
+        nav ul li ul li {
+            margin: 0;
+        }
+        nav ul li ul li a {
+            padding: 10px 20px;
+            color: #333;
+            text-decoration: none;
+        }
+        nav ul li ul li a:hover {
+            background-color: #f0f0f0;
+        }
+        nav ul li:hover ul {
+            display: block;
         }
         .content {
             padding: 20px;
@@ -106,15 +135,84 @@
     <!-- Navigation -->
     <nav>
         <ul>
-            <li><a href="#">U.S.</a></li>
-            <li><a href="#">World</a></li>
-            <li><a href="#">Business</a></li>
-            <li><a href="#">Technology</a></li>
-            <li><a href="#">Society</a></li>
-            <li><a href="#">Lifestyle</a></li>
-            <li><a href="#">Opinion</a></li>
-            <li><a href="#">Audio</a></li>
-            <li><a href="#">Video</a></li>
+            <li>
+                <a href="#">U.S.</a>
+                <ul>
+                    <li><a href="#">Politics</a></li>
+                    <li><a href="#">Economy</a></li>
+                    <li><a href="#">Health</a></li>
+                    <li><a href="#">Education</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">World</a>
+                <ul>
+                    <li><a href="#">Europe</a></li>
+                    <li><a href="#">Asia</a></li>
+                    <li><a href="#">Africa</a></li>
+                    <li><a href="#">Middle East</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Business</a>
+                <ul>
+                    <li><a href="#">Finance</a></li>
+                    <li><a href="#">Markets</a></li>
+                    <li><a href="#">Startups</a></li>
+                    <li><a href="#">Tech</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Technology</a>
+                <ul>
+                    <li><a href="#">AI</a></li>
+                    <li><a href="#">Software</a></li>
+                    <li><a href="#">Gadgets</a></li>
+                    <li><a href="#">Innovations</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Society</a>
+                <ul>
+                    <li><a href="#">Social Issues</a></li>
+                    <li><a href="#">Human Rights</a></li>
+                    <li><a href="#">Culture</a></li>
+                    <li><a href="#">Trends</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Lifestyle</a>
+                <ul>
+                    <li><a href="#">Health & Fitness</a></li>
+                    <li><a href="#">Fashion</a></li>
+                    <li><a href="#">Travel</a></li>
+                    <li><a href="#">Food</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Opinion</a>
+                <ul>
+                    <li><a href="#">Editorials</a></li>
+                    <li><a href="#">Columns</a></li>
+                    <li><a href="#">Letters</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Audio</a>
+                <ul>
+                    <li><a href="#">Podcasts</a></li>
+                    <li><a href="#">Interviews</a></li>
+                    <li><a href="#">Stories</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Video</a>
+                <ul>
+                    <li><a href="#">News</a></li>
+                    <li><a href="#">Documentaries</a></li>
+                    <li><a href="#">Interviews</a></li>
+                </ul>
+            </li>
         </ul>
     </nav>
 
