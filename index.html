@@ -28,7 +28,9 @@
         header .search-date input {
             margin-left: 10px;
         }
+        /* Căn giữa tên brand */
         header .logo {
+            flex-grow: 1;
             text-align: center;
             font-size: 32px;
             font-weight: bold;
@@ -88,7 +90,7 @@
             padding: 10px;
             display: block;
         }
-        /* Dropdown styles */
+        /* Dropdown styles - Căn trái, gọn gàng */
         nav ul li ul {
             display: none;
             position: absolute;
@@ -99,6 +101,7 @@
             padding: 10px 0;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             min-width: 150px;
+            text-align: left;
         }
         nav ul li ul li {
             margin: 0;
@@ -107,6 +110,7 @@
             padding: 10px 20px;
             color: #333;
             text-decoration: none;
+            display: block;
         }
         nav ul li ul li a:hover {
             background-color: #f0f0f0;
@@ -155,15 +159,84 @@
     <!-- Navigation -->
     <nav>
         <ul>
-            <li><a href="#">U.S.</a></li>
-            <li><a href="#">Thế giới</a></li>
-            <li><a href="#">Kinh doanh</a></li>
-            <li><a href="#">Công nghệ</a></li>
-            <li><a href="#">Xã hội</a></li>
-            <li><a href="#">Phong cách sống</a></li>
-            <li><a href="#">Ý kiến</a></li>
-            <li><a href="#">Âm thanh</a></li>
-            <li><a href="#">Video</a></li>
+            <li>
+                <a href="#">U.S.</a>
+                <ul>
+                    <li><a href="#">Politics</a></li>
+                    <li><a href="#">Economy</a></li>
+                    <li><a href="#">Health</a></li>
+                    <li><a href="#">Education</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Thế giới</a>
+                <ul>
+                    <li><a href="#">Châu Âu</a></li>
+                    <li><a href="#">Châu Á</a></li>
+                    <li><a href="#">Châu Phi</a></li>
+                    <li><a href="#">Trung Đông</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Kinh doanh</a>
+                <ul>
+                    <li><a href="#">Tài chính</a></li>
+                    <li><a href="#">Thị trường</a></li>
+                    <li><a href="#">Khởi nghiệp</a></li>
+                    <li><a href="#">Công nghệ</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Công nghệ</a>
+                <ul>
+                    <li><a href="#">AI</a></li>
+                    <li><a href="#">Phần mềm</a></li>
+                    <li><a href="#">Thiết bị</a></li>
+                    <li><a href="#">Đổi mới</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Xã hội</a>
+                <ul>
+                    <li><a href="#">Vấn đề xã hội</a></li>
+                    <li><a href="#">Nhân quyền</a></li>
+                    <li><a href="#">Văn hóa</a></li>
+                    <li><a href="#">Xu hướng</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Phong cách sống</a>
+                <ul>
+                    <li><a href="#">Sức khỏe</a></li>
+                    <li><a href="#">Thời trang</a></li>
+                    <li><a href="#">Du lịch</a></li>
+                    <li><a href="#">Ẩm thực</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Ý kiến</a>
+                <ul>
+                    <li><a href="#">Bài xã luận</a></li>
+                    <li><a href="#">Cột báo</a></li>
+                    <li><a href="#">Thư gửi</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Âm thanh</a>
+                <ul>
+                    <li><a href="#">Podcast</a></li>
+                    <li><a href="#">Phỏng vấn</a></li>
+                    <li><a href="#">Câu chuyện</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Video</a>
+                <ul>
+                    <li><a href="#">Tin tức</a></li>
+                    <li><a href="#">Phim tài liệu</a></li>
+                    <li><a href="#">Phỏng vấn</a></li>
+                </ul>
+            </li>
         </ul>
     </nav>
 
