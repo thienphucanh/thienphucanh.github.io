@@ -49,24 +49,44 @@
 
         /*Media Queries cho màn hình nhỏ*/
         @media (max-width: 768px) {
-            .logo {
-                font-size: 24px;
-            }
+           /*logo*/
+        .logo {
+            font-family: 'Roboto', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            color: #000000;
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 2px solid #000000;
+        }
+        
+        /*Nút đăng nhập*/
+        .btn-login {
+            font-family: 'Roboto', sans-serif;
+            padding: 5px 12px;
+            background-color: #000000;
+            color: white;
+            text-decoration: none;
+            font-size: 10px;
+            border-radius: 25px;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+        }
+        .btn-login:hover {
+            background-color: #00000098
+        }
 
-            .btn-login {
-                font-size: 14px;
-                padding: 8px 16px;
-            }
-
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-                height: auto;
-            }
-
-            .date-display {
-                margin-top: 10px;
-            }
+        /*Ngày tháng*/
+        .date-display {
+            font-family: 'Roboto', sans-serif;
+            font-style: italic;
+            position: absolute;
+            top: 38px;
+            right: 25px;
+            font-size: 10px;
+            color: #000000;
         }
     </style>
 </head>
