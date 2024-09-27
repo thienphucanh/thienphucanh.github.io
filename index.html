@@ -33,18 +33,38 @@
             font-size: 32px;
             font-weight: bold;
         }
+        /* Nút Đăng nhập và Đăng ký */
         header .actions {
             display: flex;
             align-items: center;
         }
-        header .actions button {
-            margin-left: 10px;
+        .btn-login, .btn-subscribe {
             padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-login {
             background-color: #007bff;
             color: white;
-            border: none;
-            cursor: pointer;
+            margin-right: 10px;
         }
+        .btn-login:hover {
+            background-color: #0056b3;
+        }
+        .btn-subscribe {
+            background-color: #fff;
+            color: #007bff;
+            border: 2px solid #007bff;
+        }
+        .btn-subscribe:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
         nav {
             background-color: #fff;
             padding: 10px 0;
@@ -120,99 +140,30 @@
     <!-- Header -->
     <header>
         <div class="search-date">
-            <span>Friday, September 27, 2024</span>
-            <input type="text" placeholder="Search...">
+            <span>Thứ Sáu, ngày 27 tháng 9 năm 2024</span>
+            <input type="text" placeholder="Tìm kiếm...">
         </div>
         <div class="logo">
             SocialHub
         </div>
         <div class="actions">
-            <button>Log In</button>
-            <button>Subscribe</button>
+            <button class="btn-login">Đăng nhập</button>
+            <button class="btn-subscribe">Đăng ký</button>
         </div>
     </header>
 
     <!-- Navigation -->
     <nav>
         <ul>
-            <li>
-                <a href="#">U.S.</a>
-                <ul>
-                    <li><a href="#">Politics</a></li>
-                    <li><a href="#">Economy</a></li>
-                    <li><a href="#">Health</a></li>
-                    <li><a href="#">Education</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">World</a>
-                <ul>
-                    <li><a href="#">Europe</a></li>
-                    <li><a href="#">Asia</a></li>
-                    <li><a href="#">Africa</a></li>
-                    <li><a href="#">Middle East</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Business</a>
-                <ul>
-                    <li><a href="#">Finance</a></li>
-                    <li><a href="#">Markets</a></li>
-                    <li><a href="#">Startups</a></li>
-                    <li><a href="#">Tech</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Technology</a>
-                <ul>
-                    <li><a href="#">AI</a></li>
-                    <li><a href="#">Software</a></li>
-                    <li><a href="#">Gadgets</a></li>
-                    <li><a href="#">Innovations</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Society</a>
-                <ul>
-                    <li><a href="#">Social Issues</a></li>
-                    <li><a href="#">Human Rights</a></li>
-                    <li><a href="#">Culture</a></li>
-                    <li><a href="#">Trends</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Lifestyle</a>
-                <ul>
-                    <li><a href="#">Health & Fitness</a></li>
-                    <li><a href="#">Fashion</a></li>
-                    <li><a href="#">Travel</a></li>
-                    <li><a href="#">Food</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Opinion</a>
-                <ul>
-                    <li><a href="#">Editorials</a></li>
-                    <li><a href="#">Columns</a></li>
-                    <li><a href="#">Letters</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Audio</a>
-                <ul>
-                    <li><a href="#">Podcasts</a></li>
-                    <li><a href="#">Interviews</a></li>
-                    <li><a href="#">Stories</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Video</a>
-                <ul>
-                    <li><a href="#">News</a></li>
-                    <li><a href="#">Documentaries</a></li>
-                    <li><a href="#">Interviews</a></li>
-                </ul>
-            </li>
+            <li><a href="#">U.S.</a></li>
+            <li><a href="#">Thế giới</a></li>
+            <li><a href="#">Kinh doanh</a></li>
+            <li><a href="#">Công nghệ</a></li>
+            <li><a href="#">Xã hội</a></li>
+            <li><a href="#">Phong cách sống</a></li>
+            <li><a href="#">Ý kiến</a></li>
+            <li><a href="#">Âm thanh</a></li>
+            <li><a href="#">Video</a></li>
         </ul>
     </nav>
 
@@ -229,11 +180,11 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 SocialHub. All Rights Reserved.</p>
+        <p>&copy; 2024 SocialHub. Mọi quyền được bảo lưu.</p>
         <div>
-            <a href="#">Terms</a>
-            <a href="#">Privacy</a>
-            <a href="#">Contact</a>
+            <a href="#">Điều khoản</a>
+            <a href="#">Chính sách riêng tư</a>
+            <a href="#">Liên hệ</a>
         </div>
     </footer>
 
