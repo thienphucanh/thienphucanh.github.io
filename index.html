@@ -2,348 +2,66 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SocialHub - Thông tin nhanh chóng, kết nối cộng đồng</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <meta name="viewport" content="with=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SocialHub - Thông tin kinh tế, chính trị, xã hội mới nhất</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
     <style>
-        body {
+        /*logo*/
+        .logo {
             font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-        }
-        header, nav, footer {
-            background-color: #fff;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        header, footer {
-            padding: 10px 20px;
-        }
-        header .logo {
-            flex-grow: 1;
-            text-align: center;
-            font-size: 32px;
+            font-size: 55px;
             font-weight: bold;
+            color: #000000;
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #000000;
         }
-        /* Nút Đăng nhập và Đăng ký */
-        header .actions {
-            display: flex;
-            align-items: center;
-        }
-        .btn-login, .btn-subscribe {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+        
+        /*Nút đăng nhập*/
         .btn-login {
-            background-color: #007bff;
+            font-family: 'Roboto', sans-serif;
+            padding: 7px 20px;
+            background-color: #000000;
             color: white;
-            margin-right: 10px;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 25px;
+            position: absolute;
+            top: 30px;
+            right: 20px;
+            cursor: pointer;
         }
         .btn-login:hover {
-            background-color: #0056b3;
+            background-color: #00000098
         }
-        .btn-subscribe {
-            background-color: #fff;
-            color: #007bff;
-            border: 2px solid #007bff;
-        }
-        .btn-subscribe:hover {
-            background-color: #007bff;
-            color: white;
-        }
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: inline-flex;
-            justify-content: center;
-            padding: 10px 0;
-            width: 100%; /* Thanh điều hướng căn giữa */
-            max-width: 1200px;
-            margin: 0 auto; /* Căn giữa thanh điều hướng */
-        }
-        nav ul li {
-            position: relative;
-            margin: 0 15px;
-        }
-        nav ul li a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            display: block;
-        }
-        nav ul li ul {
-            display: none;
+
+        /*Ngày tháng*/
+        .date-display {
+            font-family: 'Roboto', sans-serif;
+            font-style: italic;
             position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: white;
-            list-style: none;
-            padding: 10px 0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            min-width: 150px;
-            text-align: left;
-        }
-        nav ul li:hover ul {
-            display: block;
-        }
-
-        /* Layout chính */
-        .main-container {
-            display: flex;
-            justify-content: space-between; /* Điều chỉnh khoảng cách giữa các cột */
-            padding: 20px;
-            max-width: 1200px; /* Giới hạn chiều rộng trang */
-            margin: 0 auto; /* Căn giữa trang */
-        }
-
-        /* Cột hiển thị tin tức nổi bật */
-        .content-left {
-            width: 68%;
-            padding-right: 30px;
-        }
-
-        /* Các tin tức nổi bật */
-       .highlight-news {
-            margin-bottom: 40px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        .highlight-news:hover {
-            transform: translateY(-5px);
-        }
-        .highlight-news img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-bottom: 5px solid #007bff;
-        }
-         .highlight-news h3 {
-            font-size: 24px;
-            margin: 10px 0;
-            color: #007bff;
-        }
-        .highlight-news p {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #555;
-            padding: 0 15px 15px;
-        }
-        /* Cột tin tức mới nhất */
-        .content-right {
-            width: 28%;
-            border-left: 1px solid #e0e0e0;
-            padding-left: 30px;
-        }
-        .content-right h3 {
-            font-size: 20px;
-            color: #333;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-        .latest-news {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .latest-news li {
-            margin-bottom: 20px;
-            padding: 10px;
-            border-left: 3px solid #007bff;
-            transition: background-color 0.3s ease;
-        }
-        .latest-news li:hover {
-            background-color: #f0f0f0;
-        }
-        .latest-news li a {
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 18px;
-            color: #007bff;
-        }
-        .latest-news time {
-            font-size: 14px;
-            color: #999;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            border-top: 1px solid #e0e0e0;
-        }
-        footer a {
-            color: #333;
-            margin: 0 10px;
-            text-decoration: none;
+            top: 75px;
+            right: 25px;
+            font-size: 15px;
+            color: #000000;
         }
     </style>
 </head>
 <body>
-
-    <!-- Header -->
     <header>
         <div class="logo">
             SocialHub
         </div>
-        <div class="actions">
-            <button class="btn-login">Đăng nhập</button>
-            <button class="btn-subscribe">Đăng ký</button>
-        </div>
+        <a href="#" class="btn-login">Đăng nhập</a>
+        <div class="date-display" id="currentDate"></div>
     </header>
 
-    <!-- Navigation -->
-    <nav>
-        <ul>
-            <li>
-                <a href="#">U.S.</a>
-                <ul>
-                    <li><a href="#">Politics</a></li>
-                    <li><a href="#">Economy</a></li>
-                    <li><a href="#">Health</a></li>
-                    <li><a href="#">Education</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Thế giới</a>
-                <ul>
-                    <li><a href="#">Châu Âu</a></li>
-                    <li><a href="#">Châu Á</a></li>
-                    <li><a href="#">Châu Phi</a></li>
-                    <li><a href="#">Trung Đông</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Kinh doanh</a>
-                <ul>
-                    <li><a href="#">Tài chính</a></li>
-                    <li><a href="#">Thị trường</a></li>
-                    <li><a href="#">Khởi nghiệp</a></li>
-                    <li><a href="#">Công nghệ</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Công nghệ</a>
-                <ul>
-                    <li><a href="#">AI</a></li>
-                    <li><a href="#">Phần mềm</a></li>
-                    <li><a href="#">Thiết bị</a></li>
-                    <li><a href="#">Đổi mới</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Xã hội</a>
-                <ul>
-                    <li><a href="#">Vấn đề xã hội</a></li>
-                    <li><a href="#">Nhân quyền</a></li>
-                    <li><a href="#">Văn hóa</a></li>
-                    <li><a href="#">Xu hướng</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Phong cách sống</a>
-                <ul>
-                    <li><a href="#">Sức khỏe</a></li>
-                    <li><a href="#">Thời trang</a></li>
-                    <li><a href="#">Du lịch</a></li>
-                    <li><a href="#">Ẩm thực</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Ý kiến</a>
-                <ul>
-                    <li><a href="#">Bài xã luận</a></li>
-                    <li><a href="#">Cột báo</a></li>
-                    <li><a href="#">Thư gửi</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Âm thanh</a>
-                <ul>
-                    <li><a href="#">Podcast</a></li>
-                    <li><a href="#">Phỏng vấn</a></li>
-                    <li><a href="#">Câu chuyện</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Video</a>
-                <ul>
-                    <li><a href="#">Tin tức</a></li>
-                    <li><a href="#">Phim tài liệu</a></li>
-                    <li><a href="#">Phỏng vấn</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-
-    <!-- Main Content -->
-    <div class="main-container">
-        <!-- Cột tin tức nổi bật -->
-        <div class="content-left">
-            <!-- Tin tức U.S. -->
-            <div class="highlight-news">
-                <img src="https://via.placeholder.com/800x400" alt="US News">
-                <h3>Tin nổi bật về chính trị Hoa Kỳ</h3>
-                <p>
-                    Trong bối cảnh chính trị căng thẳng, Tổng thống đã tuyên bố một số chính sách quan trọng nhằm giảm thiểu áp lực đối với nền kinh tế. Những thay đổi này dự kiến sẽ tác động mạnh mẽ đến thị trường tài chính quốc tế.
-                </p>
-            </div>
-
-            <!-- Tin tức Thế giới -->
-            <div class="highlight-news">
-                <img src="https://via.placeholder.com/800x400" alt="World News">
-                <h3>Tin nóng từ Châu Âu</h3>
-                <p>
-                    Các nhà lãnh đạo châu Âu vừa đạt được thỏa thuận về vấn đề môi trường, cam kết cắt giảm lượng khí thải vào năm 2030. Thỏa thuận này được cho là một bước tiến quan trọng trong nỗ lực toàn cầu nhằm chống biến đổi khí hậu.
-                </p>
-            </div>
-
-            <!-- Tin tức Kinh doanh -->
-            <div class="highlight-news">
-                <img src="https://via.placeholder.com/800x400" alt="Business News">
-                <h3>Kinh doanh toàn cầu đang hồi phục</h3>
-                <p>
-                    Các báo cáo mới nhất cho thấy sự hồi phục của các doanh nghiệp toàn cầu sau đại dịch. Thị trường đang dần ổn định với sự gia tăng của các công ty khởi nghiệp và sự đầu tư mạnh mẽ từ các tập đoàn lớn.
-                </p>
-            </div>
-        </div>
-
-        <!-- Cột tin tức mới nhất -->
-        <div class="content-right">
-            <h3>Cập nhật mới nhất</h3>
-            <ul class="latest-news">
-                <li>
-                    <time>10 phút trước</time>
-                    <a href="#">Tăng trưởng GDP của Việt Nam trong quý IV</a>
-                </li>
-                <li>
-                    <time>30 phút trước</time>
-                    <a href="#">Apple ra mắt iPhone mới với nhiều tính năng vượt trội</a>
-                </li>
-                <li>
-                    <time>1 giờ trước</time>
-                    <a href="#">Giá dầu thế giới giảm nhẹ do ảnh hưởng từ Trung Đông</a>
-                </li>
-                <li>
-                    <time>2 giờ trước</time>
-                    <a href="#">Các nhà khoa học phát hiện cách mới để ngăn chặn biến đổi khí hậu</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 SocialHub. Mọi quyền được bảo lưu.</p>
-    </footer>
-
+    <script>
+        const today = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+        const formattedDate = today.toLocaleDateString('vi-VN', options);
+        document.getElementById('currentDate').innerText = formattedDate;
+    </script>
 </body>
 </html>
