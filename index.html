@@ -3,44 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang tổng hợp thông tin</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Tin tức 24/7 - Tổng hợp thông tin</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
             background-color: #f4f4f4;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
         }
-        header {
-            background-color: #ff4757;
+        
+        /* Toggle Dark Mode */
+        .dark-mode {
+            background-color: #1e1e1e;
             color: white;
-            padding: 20px;
-            text-align: center;
         }
+
+        /* Navigation */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
-            background-color: #2f3542;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 15px 30px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
         }
         nav ul {
             display: flex;
             list-style: none;
+            margin: 0;
             padding: 0;
         }
         nav ul li {
             margin-left: 20px;
         }
         nav ul li a {
-            color: white;
             text-decoration: none;
-            font-weight: 600;
+            color: #ff4757;
+            font-weight: bold;
         }
-        nav ul li a:hover {
-            text-decoration: underline;
-        }
+
+        /* Hero Section */
         .hero {
             background-image: url('https://via.placeholder.com/1500x600');
             background-size: cover;
@@ -48,38 +56,36 @@
             padding: 150px 20px;
             text-align: center;
             color: white;
+            position: relative;
+            margin-top: 80px;
         }
         .hero h1 {
             font-size: 48px;
             margin: 0;
+            font-weight: 600;
         }
         .hero p {
             font-size: 24px;
-            margin: 10px 0 30px;
+            margin: 20px 0 30px;
         }
         .hero a {
             background-color: #ff4757;
-            color: white;
             padding: 15px 30px;
             text-decoration: none;
             font-weight: 600;
             border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
         .hero a:hover {
             background-color: #ff6b81;
         }
-        .content {
-            padding: 50px 20px;
-        }
-        .section-title {
-            text-align: center;
-            font-size: 36px;
-            margin-bottom: 30px;
-        }
+
+        /* Card Section */
         .card-container {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
+            padding: 50px 20px;
         }
         .card {
             background-color: white;
@@ -88,6 +94,12 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
         .card img {
             width: 100%;
@@ -100,19 +112,29 @@
         .card-title {
             font-size: 20px;
             margin: 0 0 10px;
+            color: #ff4757;
+            font-weight: 600;
         }
         .card-text {
             font-size: 16px;
             color: #555;
         }
+
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer */
         footer {
             background-color: #2f3542;
             color: white;
             padding: 30px;
             text-align: center;
-        }
-        footer p {
-            margin: 10px 0;
         }
         footer .social-icons a {
             color: white;
@@ -123,21 +145,34 @@
         footer .social-icons a:hover {
             color: #ff4757;
         }
+
+        /* Dark Mode Toggle */
+        .toggle-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #ff4757;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .toggle-container i {
+            color: white;
+            font-size: 18px;
+        }
+
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <h1>Tin tức 24/7</h1>
-        <p>Trang tổng hợp thông tin kinh tế, xã hội và chính trị dành cho bạn trẻ</p>
-    </header>
+    <!-- Dark Mode Toggle -->
+    <div class="toggle-container" onclick="toggleDarkMode()">
+        <i class="fas fa-moon"></i>
+    </div>
 
     <!-- Navigation -->
     <nav>
-        <div class="logo">
-            <h2 style="color: white;">Brand</h2>
-        </div>
+        <h2 style="color: #ff4757;">Brand</h2>
         <ul>
             <li><a href="#">Trang chủ</a></li>
             <li><a href="#">Kinh tế</a></li>
@@ -154,32 +189,29 @@
         <a href="#">Xem thêm</a>
     </div>
 
-    <!-- Content Section -->
-    <div class="content">
-        <h2 class="section-title">Tin tức nổi bật</h2>
-        <div class="card-container">
-            <div class="card">
-                <img src="https://via.placeholder.com/300x200" alt="news">
-                <div class="card-body">
-                    <h3 class="card-title">Bài viết 1</h3>
-                    <p class="card-text">Tóm tắt nhanh về bài viết đầu tiên với thông tin chính và thu hút người đọc.</p>
-                </div>
+    <!-- Card Section -->
+    <div class="card-container">
+        <div class="card glass">
+            <img src="https://via.placeholder.com/300x200" alt="news">
+            <div class="card-body">
+                <h3 class="card-title">Bài viết 1</h3>
+                <p class="card-text">Tóm tắt nhanh về bài viết đầu tiên với thông tin chính và thu hút người đọc.</p>
             </div>
+        </div>
 
-            <div class="card">
-                <img src="https://via.placeholder.com/300x200" alt="news">
-                <div class="card-body">
-                    <h3 class="card-title">Bài viết 2</h3>
-                    <p class="card-text">Nội dung phân tích sâu sắc về chủ đề đang được quan tâm trong giới trẻ.</p>
-                </div>
+        <div class="card glass">
+            <img src="https://via.placeholder.com/300x200" alt="news">
+            <div class="card-body">
+                <h3 class="card-title">Bài viết 2</h3>
+                <p class="card-text">Nội dung phân tích sâu sắc về chủ đề đang được quan tâm trong giới trẻ.</p>
             </div>
+        </div>
 
-            <div class="card">
-                <img src="https://via.placeholder.com/300x200" alt="news">
-                <div class="card-body">
-                    <h3 class="card-title">Bài viết 3</h3>
-                    <p class="card-text">Một góc nhìn mới mẻ về các xu hướng kinh tế và chính trị hiện nay.</p>
-                </div>
+        <div class="card glass">
+            <img src="https://via.placeholder.com/300x200" alt="news">
+            <div class="card-body">
+                <h3 class="card-title">Bài viết 3</h3>
+                <p class="card-text">Một góc nhìn mới mẻ về các xu hướng kinh tế và chính trị hiện nay.</p>
             </div>
         </div>
     </div>
@@ -194,5 +226,11 @@
         </div>
     </footer>
 
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </body>
 </html>
