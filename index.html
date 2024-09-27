@@ -1,154 +1,198 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tổng hợp thông tin từ các bộ Chính phủ</title>
+    <title>Trang tổng hợp thông tin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* Reset các thuộc tính mặc định để trang nhất quán trên mọi trình duyệt */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
             margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f4;
         }
-
         header {
-            background-color: #0073b1;
+            background-color: #ff4757;
             color: white;
-            padding: 20px 0;
+            padding: 20px;
             text-align: center;
         }
-
-        header h1 {
-            font-size: 2em;
-            font-weight: bold;
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: #2f3542;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            margin-left: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        .hero {
+            background-image: url('https://via.placeholder.com/1500x600');
+            background-size: cover;
+            background-position: center;
+            padding: 150px 20px;
+            text-align: center;
+            color: white;
+        }
+        .hero h1 {
+            font-size: 48px;
             margin: 0;
         }
-
-        .container {
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 0 20px;
+        .hero p {
+            font-size: 24px;
+            margin: 10px 0 30px;
         }
-
-        h2 {
-            margin-bottom: 20px;
-            color: #0073b1;
+        .hero a {
+            background-color: #ff4757;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 5px;
         }
-
-        .description {
-            font-size: 1.2em;
-            margin-bottom: 20px;
+        .hero a:hover {
+            background-color: #ff6b81;
+        }
+        .content {
+            padding: 50px 20px;
+        }
+        .section-title {
             text-align: center;
+            font-size: 36px;
+            margin-bottom: 30px;
         }
-
         .card-container {
             display: flex;
+            justify-content: space-around;
             flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
         }
-
         .card {
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
             width: 300px;
-            text-align: center;
-            transition: transform 0.2s;
+            margin: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
         }
-
-        .card:hover {
-            transform: translateY(-10px);
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
         }
-
-        .card h3 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-            color: #0073b1;
+        .card-body {
+            padding: 20px;
         }
-
-        .card p {
-            margin-bottom: 15px;
-            color: #666;
+        .card-title {
+            font-size: 20px;
+            margin: 0 0 10px;
         }
-
-        .card a {
-            text-decoration: none;
-            color: white;
-            background-color: #0073b1;
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+        .card-text {
+            font-size: 16px;
+            color: #555;
         }
-
-        .card a:hover {
-            background-color: #005f8e;
-        }
-
         footer {
-            margin-top: 40px;
+            background-color: #2f3542;
+            color: white;
+            padding: 30px;
             text-align: center;
-            font-size: 0.9em;
-            color: #666;
         }
-
-        @media (max-width: 768px) {
-            .card-container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .card {
-                width: 100%;
-            }
+        footer p {
+            margin: 10px 0;
+        }
+        footer .social-icons a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 20px;
+        }
+        footer .social-icons a:hover {
+            color: #ff4757;
         }
     </style>
 </head>
-
 <body>
+
+    <!-- Header -->
     <header>
-        <h1>Tổng hợp thông tin từ các bộ Chính phủ Việt Nam</h1>
+        <h1>Tin tức 24/7</h1>
+        <p>Trang tổng hợp thông tin kinh tế, xã hội và chính trị dành cho bạn trẻ</p>
     </header>
 
-    <div class="container">
-        <p class="description">Dưới đây là các nguồn thông tin mới nhất từ các bộ Chính phủ. Nhấp vào từng bộ để xem chi tiết.</p>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <h2 style="color: white;">Brand</h2>
+        </div>
+        <ul>
+            <li><a href="#">Trang chủ</a></li>
+            <li><a href="#">Kinh tế</a></li>
+            <li><a href="#">Xã hội</a></li>
+            <li><a href="#">Chính trị</a></li>
+            <li><a href="#">Liên hệ</a></li>
+        </ul>
+    </nav>
 
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Thông tin chính xác - Phân tích chuyên sâu</h1>
+        <p>Khám phá các tin tức nóng nhất về kinh tế, xã hội và chính trị</p>
+        <a href="#">Xem thêm</a>
+    </div>
+
+    <!-- Content Section -->
+    <div class="content">
+        <h2 class="section-title">Tin tức nổi bật</h2>
         <div class="card-container">
             <div class="card">
-                <h3>Bộ Tài Chính</h3>
-                <p>Cập nhật các thông báo mới nhất từ Bộ Tài Chính Việt Nam.</p>
-                <a href="https://www.mof.gov.vn" target="_blank">Truy cập trang web</a>
+                <img src="https://via.placeholder.com/300x200" alt="news">
+                <div class="card-body">
+                    <h3 class="card-title">Bài viết 1</h3>
+                    <p class="card-text">Tóm tắt nhanh về bài viết đầu tiên với thông tin chính và thu hút người đọc.</p>
+                </div>
             </div>
 
             <div class="card">
-                <h3>Bộ Công Thương</h3>
-                <p>Cập nhật các tin tức và thông báo từ Bộ Công Thương.</p>
-                <a href="https://moit.gov.vn" target="_blank">Truy cập trang web</a>
+                <img src="https://via.placeholder.com/300x200" alt="news">
+                <div class="card-body">
+                    <h3 class="card-title">Bài viết 2</h3>
+                    <p class="card-text">Nội dung phân tích sâu sắc về chủ đề đang được quan tâm trong giới trẻ.</p>
+                </div>
             </div>
 
             <div class="card">
-                <h3>Bộ Kế hoạch và Đầu tư</h3>
-                <p>Xem các thông báo và tin tức mới từ Bộ Kế hoạch và Đầu tư.</p>
-                <a href="https://mpi.gov.vn" target="_blank">Truy cập trang web</a>
+                <img src="https://via.placeholder.com/300x200" alt="news">
+                <div class="card-body">
+                    <h3 class="card-title">Bài viết 3</h3>
+                    <p class="card-text">Một góc nhìn mới mẻ về các xu hướng kinh tế và chính trị hiện nay.</p>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Footer -->
     <footer>
-        <p>Website được phát triển để tổng hợp thông tin công khai từ các bộ thuộc Chính phủ Việt Nam.</p>
+        <p>&copy; 2024 Tin tức 24/7. Tất cả quyền được bảo lưu.</p>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
     </footer>
-</body>
 
+</body>
 </html>
