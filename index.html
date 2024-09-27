@@ -12,23 +12,13 @@
             padding: 0;
             background-color: #f9f9f9;
         }
-        header {
+        header, nav, footer {
             background-color: #fff;
             border-bottom: 1px solid #e0e0e0;
+        }
+        header, footer {
             padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
-        header .search-date {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-        }
-        header .search-date input {
-            margin-left: 10px;
-        }
-        /* Căn giữa tên brand */
         header .logo {
             flex-grow: 1;
             text-align: center;
@@ -66,18 +56,13 @@
             background-color: #007bff;
             color: white;
         }
-
-        nav {
-            background-color: #fff;
-            padding: 10px 0;
-            text-align: center;
-            border-bottom: 1px solid #e0e0e0;
-        }
         nav ul {
             list-style: none;
             padding: 0;
             margin: 0;
             display: inline-flex;
+            justify-content: center;
+            padding: 10px 0;
         }
         nav ul li {
             position: relative;
@@ -87,10 +72,8 @@
             text-decoration: none;
             color: #333;
             font-weight: 500;
-            padding: 10px;
             display: block;
         }
-        /* Dropdown styles - Căn trái, gọn gàng */
         nav ul li ul {
             display: none;
             position: absolute;
@@ -103,33 +86,69 @@
             min-width: 150px;
             text-align: left;
         }
-        nav ul li ul li {
-            margin: 0;
-        }
-        nav ul li ul li a {
-            padding: 10px 20px;
-            color: #333;
-            text-decoration: none;
-            display: block;
-        }
-        nav ul li ul li a:hover {
-            background-color: #f0f0f0;
-        }
         nav ul li:hover ul {
             display: block;
         }
-        .content {
+
+        /* Layout chính */
+        .main-container {
+            display: flex;
             padding: 20px;
         }
-        .content .headline {
+
+        /* Cột hiển thị tin tức nổi bật */
+        .content-left {
+            width: 70%;
+            padding-right: 20px;
+        }
+
+        /* Các tin tức nổi bật */
+        .highlight-news {
+            margin-bottom: 40px;
+        }
+        .highlight-news img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .highlight-news h3 {
             font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
+            margin: 10px 0;
         }
+        .highlight-news p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* Cột tin tức mới nhất */
+        .content-right {
+            width: 30%;
+            border-left: 1px solid #e0e0e0;
+            padding-left: 20px;
+        }
+        .latest-news {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .latest-news li {
+            margin-bottom: 20px;
+        }
+        .latest-news li a {
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 18px;
+            color: #007bff;
+        }
+        .latest-news time {
+            font-size: 14px;
+            color: #999;
+        }
+
         footer {
-            background-color: #f8f9fa;
-            padding: 20px;
             text-align: center;
+            padding: 20px;
             border-top: 1px solid #e0e0e0;
         }
         footer a {
@@ -143,10 +162,6 @@
 
     <!-- Header -->
     <header>
-        <div class="search-date">
-            <span>Thứ Sáu, ngày 27 tháng 9 năm 2024</span>
-            <input type="text" placeholder="Tìm kiếm...">
-        </div>
         <div class="logo">
             SocialHub
         </div>
@@ -241,24 +256,64 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="content">
-        <div class="headline">
-            Bài viết nổi bật: Cập nhật tin tức nhanh chóng từ khắp nơi trên thế giới
+    <div class="main-container">
+        <!-- Cột tin tức nổi bật -->
+        <div class="content-left">
+            <!-- Tin tức U.S. -->
+            <div class="highlight-news">
+                <img src="https://via.placeholder.com/800x400" alt="US News">
+                <h3>Tin nổi bật về chính trị Hoa Kỳ</h3>
+                <p>
+                    Trong bối cảnh chính trị căng thẳng, Tổng thống đã tuyên bố một số chính sách quan trọng nhằm giảm thiểu áp lực đối với nền kinh tế. Những thay đổi này dự kiến sẽ tác động mạnh mẽ đến thị trường tài chính quốc tế.
+                </p>
+            </div>
+
+            <!-- Tin tức Thế giới -->
+            <div class="highlight-news">
+                <img src="https://via.placeholder.com/800x400" alt="World News">
+                <h3>Tin nóng từ Châu Âu</h3>
+                <p>
+                    Các nhà lãnh đạo châu Âu vừa đạt được thỏa thuận về vấn đề môi trường, cam kết cắt giảm lượng khí thải vào năm 2030. Thỏa thuận này được cho là một bước tiến quan trọng trong nỗ lực toàn cầu nhằm chống biến đổi khí hậu.
+                </p>
+            </div>
+
+            <!-- Tin tức Kinh doanh -->
+            <div class="highlight-news">
+                <img src="https://via.placeholder.com/800x400" alt="Business News">
+                <h3>Kinh doanh toàn cầu đang hồi phục</h3>
+                <p>
+                    Các báo cáo mới nhất cho thấy sự hồi phục của các doanh nghiệp toàn cầu sau đại dịch. Thị trường đang dần ổn định với sự gia tăng của các công ty khởi nghiệp và sự đầu tư mạnh mẽ từ các tập đoàn lớn.
+                </p>
+            </div>
         </div>
-        <p>
-            Khám phá các bài viết phân tích chuyên sâu về tình hình kinh tế, xã hội và công nghệ.
-            Cùng SocialHub bắt kịp các xu hướng mới nhất và thông tin nóng hổi được cập nhật mỗi giờ.
-        </p>
+
+        <!-- Cột tin tức mới nhất -->
+        <div class="content-right">
+            <h3>Cập nhật mới nhất</h3>
+            <ul class="latest-news">
+                <li>
+                    <time>10 phút trước</time>
+                    <a href="#">Tăng trưởng GDP của Việt Nam trong quý IV</a>
+                </li>
+                <li>
+                    <time>30 phút trước</time>
+                    <a href="#">Apple ra mắt iPhone mới với nhiều tính năng vượt trội</a>
+                </li>
+                <li>
+                    <time>1 giờ trước</time>
+                    <a href="#">Giá dầu thế giới giảm nhẹ do ảnh hưởng từ Trung Đông</a>
+                </li>
+                <li>
+                    <time>2 giờ trước</time>
+                    <a href="#">Các nhà khoa học phát hiện cách mới để ngăn chặn biến đổi khí hậu</a>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <!-- Footer -->
     <footer>
         <p>&copy; 2024 SocialHub. Mọi quyền được bảo lưu.</p>
-        <div>
-            <a href="#">Điều khoản</a>
-            <a href="#">Chính sách riêng tư</a>
-            <a href="#">Liên hệ</a>
-        </div>
     </footer>
 
 </body>
