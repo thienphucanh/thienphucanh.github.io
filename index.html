@@ -100,6 +100,43 @@
             gap: 16px;
         }
 
+        .duration-inputs {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 8px 12px;
+            width: 100%;
+        }
+
+        .duration-inputs input[type="number"] {
+            width: 72px;
+            border: none;
+            background: transparent;
+            padding: 4px 0;
+            text-align: center;
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: inherit;
+        }
+
+        .duration-inputs input[type="number"]:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .duration-inputs:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-soft);
+        }
+
+        .duration-separator {
+            font-weight: 600;
+            color: var(--muted);
+        }
+
         label {
             font-weight: 600;
             font-size: 0.95rem;
@@ -420,8 +457,13 @@
                     <input id="session-date" name="date" type="date" required>
                 </div>
                 <div>
-                    <label for="duration">Planned duration (hours)</label>
-                    <input id="duration" name="duration" type="number" min="0.25" step="0.25" placeholder="e.g. 1.5" required>
+                    <label for="duration-hours">Planned duration</label>
+                    <div class="duration-inputs">
+                        <input id="duration-hours" name="duration-hours" type="number" min="0" step="1" value="1" aria-label="Planned hours">
+                        <span class="duration-separator" aria-hidden="true">h</span>
+                        <input id="duration-minutes" name="duration-minutes" type="number" min="0" max="59" step="5" value="0" aria-label="Planned minutes">
+                        <span class="duration-separator" aria-hidden="true">m</span>
+                    </div>
                 </div>
                 <div>
                     <label for="category">Category</label>
@@ -603,26 +645,40 @@
         sessionForm.addEventListener('submit', event => {
             event.preventDefault();
             const formData = new FormData(sessionForm);
+            const durationHoursInput = sessionForm.querySelector('#duration-hours');
+            const durationMinutesInput = sessionForm.querySelector('#duration-minutes');
+            const plannedDuration = readDurationFromForm(formData);
 
             const newSession = {
                 id: crypto.randomUUID(),
                 subject: formData.get('subject').trim(),
                 date: formData.get('date'),
-                duration: Number(formData.get('duration')),
+                duration: plannedDuration,
                 category: formData.get('category'),
                 notes: formData.get('notes').trim(),
                 completed: false,
                 createdAt: new Date().toISOString(),
             };
 
-            if (!newSession.subject || !newSession.date || !newSession.duration) {
+            if (!newSession.subject || !newSession.date || plannedDuration === null) {
+                if (durationMinutesInput) {
+                    durationMinutesInput.focus();
+                    durationMinutesInput.setCustomValidity('Please enter a duration greater than zero.');
+                    durationMinutesInput.reportValidity();
+                    durationMinutesInput.setCustomValidity('');
+                }
                 return;
             }
+
+            if (durationHoursInput) durationHoursInput.setCustomValidity('');
+            if (durationMinutesInput) durationMinutesInput.setCustomValidity('');
 
             sessions.push(newSession);
             saveSessions(sessions);
             sessionForm.reset();
             sessionForm.querySelector('#session-date').valueAsDate = new Date();
+            if (durationHoursInput) durationHoursInput.value = '1';
+            if (durationMinutesInput) durationMinutesInput.value = '0';
             render();
         });
 
@@ -944,6 +1000,21 @@
             if (wholeHours && remainingMinutes) return `${wholeHours}h ${remainingMinutes}m`;
             if (wholeHours) return `${wholeHours}h`;
             return `${remainingMinutes}m`;
+        }
+
+        function readDurationFromForm(formData) {
+            const hoursRaw = Number(formData.get('duration-hours'));
+            const minutesRaw = Number(formData.get('duration-minutes'));
+
+            const safeHours = Number.isFinite(hoursRaw) ? Math.max(0, Math.floor(hoursRaw)) : 0;
+            const safeMinutes = Number.isFinite(minutesRaw) ? Math.max(0, Math.floor(minutesRaw)) : 0;
+            const normalizedMinutes = safeHours * 60 + Math.min(59, safeMinutes);
+
+            if (normalizedMinutes <= 0) {
+                return null;
+            }
+
+            return normalizedMinutes / 60;
         }
 
         function updateTimerDisplays() {
