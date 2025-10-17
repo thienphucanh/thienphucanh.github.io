@@ -538,6 +538,10 @@
                     <div class="stat-value" id="total-hours">0m</div>
                 </div>
                 <div class="stat">
+                    <div class="stat-label">Total completed duration</div>
+                    <div class="stat-value" id="total-completed">0m</div>
+                </div>
+                <div class="stat">
                     <div class="stat-label">Completed sessions</div>
                     <div class="stat-value" id="completed-count">0</div>
                 </div>
@@ -566,6 +570,7 @@
         const sortOrder = document.getElementById('sort-order');
         const totalHoursEl = document.getElementById('total-hours');
         const completedCountEl = document.getElementById('completed-count');
+        const totalCompletedEl = document.getElementById('total-completed');
         const upcomingCountEl = document.getElementById('upcoming-count');
         const avgDurationEl = document.getElementById('avg-duration');
         const progressFill = document.getElementById('progress-fill');
@@ -857,8 +862,13 @@
             const completedSessions = sessions.filter(session => session.completed);
             const upcomingSessions = sessions.filter(session => !session.completed);
             const avgDuration = sessions.length ? (totalHours / sessions.length) : 0;
+            const totalCompletedHours = completedSessions.reduce(
+                (sum, session) => sum + getSessionLoggedHours(session),
+                0
+            );
 
             totalHoursEl.textContent = formatHoursAndMinutes(totalHours);
+            totalCompletedEl.textContent = formatHoursAndMinutes(totalCompletedHours);
             completedCountEl.textContent = completedSessions.length;
             upcomingCountEl.textContent = upcomingSessions.length;
             avgDurationEl.textContent = formatHoursAndMinutes(avgDuration);
