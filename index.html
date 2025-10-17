@@ -204,6 +204,11 @@
             border-radius: 999px;
         }
 
+        .badge.success {
+            background: rgba(22, 163, 74, 0.14);
+            color: var(--accent);
+        }
+
         .session-actions {
             display: flex;
             gap: 8px;
@@ -221,6 +226,26 @@
             box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18);
         }
 
+        .session-actions button.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+            color: #ffffff;
+            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.25);
+        }
+
+        .session-actions button.primary:hover {
+            box-shadow: 0 16px 28px rgba(37, 99, 235, 0.28);
+        }
+
+        .session-actions button.primary.stop {
+            background: linear-gradient(135deg, #dc2626 0%, #f87171 100%);
+            box-shadow: 0 12px 24px rgba(220, 38, 38, 0.25);
+            color: #ffffff;
+        }
+
+        .session-actions button.primary.stop:hover {
+            box-shadow: 0 16px 28px rgba(220, 38, 38, 0.3);
+        }
+
         .session-actions button.delete {
             background: rgba(220, 38, 38, 0.12);
             color: var(--danger);
@@ -229,6 +254,44 @@
 
         .session-actions button.delete:hover {
             box-shadow: 0 8px 18px rgba(220, 38, 38, 0.18);
+        }
+
+        .timer-panel {
+            margin-top: 16px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            background: rgba(82, 96, 109, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .timer-panel.running {
+            background: rgba(37, 99, 235, 0.16);
+        }
+
+        .timer-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .timer-panel.running .timer-label {
+            color: var(--primary);
+        }
+
+        .timer-display {
+            font-variant-numeric: tabular-nums;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text);
+        }
+
+        .timer-panel.running .timer-display {
+            color: var(--primary);
         }
 
         .empty-state {
@@ -472,6 +535,7 @@
 
         const STORAGE_KEY = 'study-compass-sessions';
         const GOAL_KEY = 'study-compass-weekly-goal';
+        const TIMER_KEY = 'study-compass-active-timer';
 
         function loadSessions() {
             try {
@@ -500,8 +564,38 @@
             localStorage.setItem(GOAL_KEY, String(goal));
         }
 
+        function loadActiveTimer() {
+            try {
+                const raw = localStorage.getItem(TIMER_KEY);
+                if (!raw) return null;
+                const data = JSON.parse(raw);
+                if (!data || !data.sessionId || !data.startedAt) {
+                    return null;
+                }
+                return data;
+            } catch (error) {
+                console.error('Failed to load active timer', error);
+                return null;
+            }
+        }
+
+        function saveActiveTimer(timer) {
+            if (timer) {
+                localStorage.setItem(TIMER_KEY, JSON.stringify(timer));
+            } else {
+                localStorage.removeItem(TIMER_KEY);
+            }
+        }
+
         let sessions = loadSessions();
         let weeklyGoal = loadGoal();
+        let activeTimer = loadActiveTimer();
+        let timerInterval = null;
+
+        if (activeTimer && !sessions.some(session => session.id === activeTimer.sessionId)) {
+            activeTimer = null;
+            saveActiveTimer(null);
+        }
 
         weeklyGoalInput.value = weeklyGoal;
         goalLabel.textContent = weeklyGoal + 'h';
@@ -542,9 +636,9 @@
             }
         });
 
-        filterStatus.addEventListener('change', renderSessions);
-        filterCategory.addEventListener('change', renderSessions);
-        sortOrder.addEventListener('change', renderSessions);
+        filterStatus.addEventListener('change', render);
+        filterCategory.addEventListener('change', render);
+        sortOrder.addEventListener('change', render);
 
         function renderSessions() {
             sessionList.innerHTML = '';
@@ -581,6 +675,25 @@
 
             for (const session of sorted) {
                 const card = document.createElement('article');
+                const isActive = Boolean(activeTimer && activeTimer.sessionId === session.id);
+                const hasLoggedMinutes = Number.isFinite(session.actualMinutes);
+                const statusBadge = session.completed
+                    ? '<span class="badge success">Completed</span>'
+                    : '';
+                const timerMarkup = (isActive || hasLoggedMinutes)
+                    ? `
+                        <div class="timer-panel ${isActive ? 'running' : ''}">
+                            <div class="timer-label">${isActive ? 'Timer running' : 'Logged duration'}</div>
+                            ${isActive
+                                ? `<div class="timer-display" data-timer="${session.id}">${formatTimerDisplay(getElapsedMs(activeTimer))}</div>`
+                                : `<div class="timer-display">${formatHumanMinutes(session.actualMinutes)}</div>`}
+                        </div>
+                    `
+                    : '';
+                const startButton = session.completed
+                    ? ''
+                    : `<button class="primary${isActive ? ' stop' : ''}" data-action="${isActive ? 'stop-timer' : 'start-timer'}" data-id="${session.id}">${isActive ? 'Stop timer' : 'Start session'}</button>`;
+
                 card.className = 'session-card' + (session.completed ? ' completed' : '');
                 card.innerHTML = `
                     <header style="display:flex; justify-content: space-between; align-items:flex-start; gap:12px;">
@@ -592,10 +705,12 @@
                                 <span>${session.duration}h planned</span>
                             </div>
                         </div>
-                        ${session.completed ? '<span class="badge" style="background: rgba(22, 163, 74, 0.12); color: var(--accent);">Completed</span>' : ''}
+                        ${statusBadge}
                     </header>
                     ${session.notes ? `<p style="margin:16px 0 0; line-height:1.5; color: var(--muted);">${escapeHtml(session.notes)}</p>` : ''}
+                    ${timerMarkup}
                     <div class="session-actions">
+                        ${startButton}
                         <button data-action="toggle" data-id="${session.id}">${session.completed ? 'Mark as planned' : 'Mark complete'}</button>
                         <button class="delete" data-action="delete" data-id="${session.id}">Delete</button>
                     </div>
@@ -610,21 +725,50 @@
 
             const id = button.dataset.id;
             const action = button.dataset.action;
+            if (action === 'start-timer') {
+                startSessionTimer(id);
+                return;
+            }
+
+            if (action === 'stop-timer') {
+                finalizeActiveTimer();
+                return;
+            }
+
             const sessionIndex = sessions.findIndex(s => s.id === id);
             if (sessionIndex === -1) return;
+            const session = sessions[sessionIndex];
 
             if (action === 'toggle') {
-                sessions[sessionIndex].completed = !sessions[sessionIndex].completed;
+                if (!session.completed && activeTimer && activeTimer.sessionId === id) {
+                    finalizeActiveTimer();
+                    return;
+                }
+
+                session.completed = !session.completed;
+                if (!session.completed) {
+                    delete session.actualMinutes;
+                }
+
+                saveSessions(sessions);
+                render();
+                return;
             }
 
             if (action === 'delete') {
                 const confirmed = confirm('Remove this session?');
                 if (!confirmed) return;
                 sessions.splice(sessionIndex, 1);
-            }
+                saveSessions(sessions);
 
-            saveSessions(sessions);
-            render();
+                if (activeTimer && activeTimer.sessionId === id) {
+                    finalizeActiveTimer({ persistDuration: false });
+                    return;
+                }
+
+                render();
+                return;
+            }
         });
 
         function renderStats() {
@@ -643,7 +787,7 @@
                 .filter(session => isWithinWeek(session.date, weekRange))
                 .reduce((sum, session) => sum + Number(session.duration || 0), 0);
 
-            const percent = Math.min(100, Math.round((thisWeekHours / weeklyGoal) * 100));
+            const percent = weeklyGoal ? Math.min(100, Math.round((thisWeekHours / weeklyGoal) * 100)) : 0;
             progressFill.style.width = percent + '%';
             progressFill.parentElement.setAttribute('aria-valuenow', percent);
             progressSummary.textContent = `${thisWeekHours.toFixed(1)}h logged this week`;
@@ -725,9 +869,113 @@
             return streak;
         }
 
+        function startSessionTimer(sessionId) {
+            const session = sessions.find(item => item.id === sessionId);
+            if (!session) return;
+
+            if (activeTimer && activeTimer.sessionId === sessionId) {
+                return;
+            }
+
+            if (activeTimer && activeTimer.sessionId !== sessionId) {
+                const confirmSwitch = confirm('A different session timer is running. Stop it and save the time?');
+                if (!confirmSwitch) return;
+                finalizeActiveTimer();
+            }
+
+            activeTimer = {
+                sessionId,
+                startedAt: new Date().toISOString(),
+            };
+            saveActiveTimer(activeTimer);
+            render();
+        }
+
+        function finalizeActiveTimer({ markComplete = true, persistDuration = true } = {}) {
+            if (!activeTimer) return;
+
+            const sessionIndex = sessions.findIndex(session => session.id === activeTimer.sessionId);
+            if (sessionIndex !== -1 && persistDuration) {
+                const elapsedMinutes = Math.max(0, Math.round(getElapsedMs(activeTimer) / 60000));
+                sessions[sessionIndex].actualMinutes = elapsedMinutes;
+                if (markComplete) {
+                    sessions[sessionIndex].completed = true;
+                }
+                saveSessions(sessions);
+            }
+
+            clearTimerTick();
+            activeTimer = null;
+            saveActiveTimer(null);
+            render();
+        }
+
+        function getElapsedMs(timer) {
+            if (!timer || !timer.startedAt) return 0;
+            return Math.max(0, Date.now() - new Date(timer.startedAt).getTime());
+        }
+
+        function formatTimerDisplay(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return [hours, minutes, seconds]
+                .map(value => String(value).padStart(2, '0'))
+                .join(':');
+        }
+
+        function formatHumanMinutes(minutes) {
+            if (!Number.isFinite(minutes)) return '';
+            const safeMinutes = Math.max(0, Math.round(minutes));
+            const hours = Math.floor(safeMinutes / 60);
+            const remainingMinutes = safeMinutes % 60;
+            if (hours && remainingMinutes) return `${hours}h ${remainingMinutes}m`;
+            if (hours) return `${hours}h`;
+            return `${remainingMinutes}m`;
+        }
+
+        function updateTimerDisplays() {
+            if (!activeTimer) return;
+            const display = document.querySelector(`[data-timer="${activeTimer.sessionId}"]`);
+            if (display) {
+                display.textContent = formatTimerDisplay(getElapsedMs(activeTimer));
+            }
+        }
+
+        function startTimerTick() {
+            clearTimerTick();
+            if (!activeTimer) return;
+            updateTimerDisplays();
+            timerInterval = setInterval(updateTimerDisplays, 1000);
+        }
+
+        function clearTimerTick() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function ensureTimerTick() {
+            if (activeTimer && !sessions.some(session => session.id === activeTimer.sessionId)) {
+                clearTimerTick();
+                activeTimer = null;
+                saveActiveTimer(null);
+                return;
+            }
+
+            if (activeTimer) {
+                startTimerTick();
+            } else {
+                clearTimerTick();
+            }
+        }
+
         function render() {
             renderSessions();
             renderStats();
+            ensureTimerTick();
         }
 
         timezoneEl && renderTimezone();
