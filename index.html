@@ -493,7 +493,7 @@
             <div class="stats-grid">
                 <div class="stat">
                     <div class="stat-label">Total planned hours</div>
-                    <div class="stat-value" id="total-hours">0</div>
+                    <div class="stat-value" id="total-hours">0m</div>
                 </div>
                 <div class="stat">
                     <div class="stat-label">Completed sessions</div>
@@ -505,7 +505,7 @@
                 </div>
                 <div class="stat">
                     <div class="stat-label">Average session length</div>
-                    <div class="stat-value" id="avg-duration">0h</div>
+                    <div class="stat-value" id="avg-duration">0m</div>
                 </div>
             </div>
             <div class="timezone" id="timezone"></div>
@@ -598,7 +598,7 @@
         }
 
         weeklyGoalInput.value = weeklyGoal;
-        goalLabel.textContent = weeklyGoal + 'h';
+        goalLabel.textContent = formatHoursAndMinutes(weeklyGoal);
 
         sessionForm.addEventListener('submit', event => {
             event.preventDefault();
@@ -631,7 +631,7 @@
             if (value && value >= 1) {
                 weeklyGoal = Math.round(value);
                 saveGoal(weeklyGoal);
-                goalLabel.textContent = weeklyGoal + 'h';
+                goalLabel.textContent = formatHoursAndMinutes(weeklyGoal);
                 renderStats();
             }
         });
@@ -702,7 +702,7 @@
                             <div class="session-meta">
                                 <span class="badge">${session.category}</span>
                                 <span>${formatDate(session.date)}</span>
-                                <span>${session.duration}h planned</span>
+                                <span>${formatHoursAndMinutes(session.duration)} planned</span>
                             </div>
                         </div>
                         ${statusBadge}
@@ -777,10 +777,10 @@
             const upcomingSessions = sessions.filter(session => !session.completed);
             const avgDuration = sessions.length ? (totalHours / sessions.length) : 0;
 
-            totalHoursEl.textContent = totalHours.toFixed(1) + 'h';
+            totalHoursEl.textContent = formatHoursAndMinutes(totalHours);
             completedCountEl.textContent = completedSessions.length;
             upcomingCountEl.textContent = upcomingSessions.length;
-            avgDurationEl.textContent = avgDuration ? avgDuration.toFixed(1) + 'h' : '0h';
+            avgDurationEl.textContent = formatHoursAndMinutes(avgDuration);
 
             const weekRange = getCurrentWeekRange();
             const thisWeekHours = sessions
@@ -790,9 +790,9 @@
             const percent = weeklyGoal ? Math.min(100, Math.round((thisWeekHours / weeklyGoal) * 100)) : 0;
             progressFill.style.width = percent + '%';
             progressFill.parentElement.setAttribute('aria-valuenow', percent);
-            progressSummary.textContent = `${thisWeekHours.toFixed(1)}h logged this week`;
+            progressSummary.textContent = `${formatHoursAndMinutes(thisWeekHours)} logged this week`;
 
-            goalLabel.textContent = weeklyGoal + 'h';
+            goalLabel.textContent = formatHoursAndMinutes(weeklyGoal);
 
             const streak = calculateStreak();
             streakEl.textContent = streak > 1
@@ -932,6 +932,17 @@
             const remainingMinutes = safeMinutes % 60;
             if (hours && remainingMinutes) return `${hours}h ${remainingMinutes}m`;
             if (hours) return `${hours}h`;
+            return `${remainingMinutes}m`;
+        }
+
+        function formatHoursAndMinutes(hours) {
+            const numeric = Number(hours);
+            if (!Number.isFinite(numeric)) return '0m';
+            const totalMinutes = Math.max(0, Math.round(numeric * 60));
+            const wholeHours = Math.floor(totalMinutes / 60);
+            const remainingMinutes = totalMinutes % 60;
+            if (wholeHours && remainingMinutes) return `${wholeHours}h ${remainingMinutes}m`;
+            if (wholeHours) return `${wholeHours}h`;
             return `${remainingMinutes}m`;
         }
 
